@@ -22,7 +22,7 @@ const mutations = {
    */
   setUser (state, user) {
     state.user = user
-    LocalStorage.set('user')
+    LocalStorage.set('user', user)
   },
 
   /**
