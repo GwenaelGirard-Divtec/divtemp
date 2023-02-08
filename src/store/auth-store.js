@@ -33,6 +33,16 @@ const mutations = {
   setToken (state, token) {
     state.token = token
     LocalStorage.set('token', token)
+  },
+
+  /**
+   * Modifie l'utilisateur connecté
+   * @param state
+   * @param payload contient l'id de l'utilisateur à modifier et les modifications à effectuer
+   */
+  updateUser (state, payload) {
+    Object.assign(state.user, payload.updates)
+    LocalStorage.set('user', payload.updates)
   }
 }
 
@@ -82,15 +92,37 @@ const actions = {
         throw error
       })
       .finally(() => {
+        this.$router.push('/auth')
+
         // efface les valeurs du magasin
         commit('setUser', null)
         commit('setToken', null)
 
         // efface le localstorage
         LocalStorage.clear()
-
         Loading.hide()
       })
+  },
+
+  updateUser ({ commit, state }, payload) {
+    Loading.show()
+
+    const config = {
+      headers: { Authorization: 'Bearer ' + state.token }
+    }
+
+    tempapi.put('/updateme', payload.updates, config)
+      .then(response => {
+        console.log(response)
+        payload.updates = response.data
+        commit('updateUser', payload)
+      }).catch(function (error) {
+        errorDialog(
+          'Modification de tâche impossible !', Object.values(error.response.data)
+        )
+        throw error
+      })
+      .finally(Loading.hide)
   },
 
   /**
