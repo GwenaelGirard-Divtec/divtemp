@@ -1,7 +1,7 @@
 <template>
 <div class="full-width q-mb-xl">
-  <span class="text-h5 text-weight-medium" :id="title">{{title}}</span>
-  <q-separator/>
+  <span v-show="this.title !== ''" class="text-h5 text-weight-medium" :id="title">{{title}}</span>
+  <q-separator v-show="this.title !== ''" />
   <div class="q-pt-sm">
     <slot></slot>
   </div>

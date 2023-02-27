@@ -111,6 +111,14 @@ const getters = {
     }
 
     return organizedCapteurs
+  },
+
+  favouriteCapteurs: state => {
+    if (state.capteurs) {
+      return state.capteurs.filter((capteur) => state.favouriteCapteurs.indexOf(capteur.id) !== -1)
+    } else {
+      return []
+    }
   }
 }
 

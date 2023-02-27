@@ -1,13 +1,49 @@
 <template>
   <q-page padding>
+
     <q-space class="q-mb-lg"/>
-    <CapteurContainer v-for="salle in capteursBySalle" :key="salle" :title="salle.nom">
-      <div class="row q-col-gutter-lg">
-        <div  class="col-xs-12 col-sm-6 col-md-6 col-lg-4" v-for="capteur in salle.capteurs" :key="capteur.id">
-          <capteur :capteur="capteur"/>
+
+    <q-tabs
+      v-model="tab"
+      dense
+      class="text-grey"
+      active-color="primary"
+      indicator-color="primary"
+      align="justify"
+      narrow-indicator
+    >
+      <q-tab name="all" label="Tous les capteurs" />
+      <q-tab name="favourites" label="Capteurs favoris" />
+    </q-tabs>
+
+    <q-separator />
+
+    <q-tab-panels v-model="tab" animated transition-prev="fade" transition-next="fade">
+      <q-tab-panel name="all">
+        <CapteurContainer v-for="salle in capteursBySalle" :key="salle" :title="salle.nom">
+          <div class="row q-col-gutter-lg">
+            <div  class="col-xs-12 col-sm-6 col-md-6 col-lg-4" v-for="capteur in salle.capteurs" :key="capteur.id">
+              <capteur :capteur="capteur"/>
+            </div>
+          </div>
+        </CapteurContainer>
+      </q-tab-panel>
+
+      <q-tab-panel name="favourites">
+
+        <div v-if="this.favouriteCapteurs.length === 0">
+          <span class="flex flex-center text-h5 text-grey-6">Aucun capteurs favoris</span>
         </div>
-      </div>
-    </CapteurContainer>
+
+        <CapteurContainer title="" v-else>
+          <div class="row q-col-gutter-lg">
+            <div  class="col-xs-12 col-sm-6 col-md-6 col-lg-4" v-for="capteur in this.favouriteCapteurs" :key="capteur.id">
+              <capteur :capteur="capteur"/>
+            </div>
+          </div>
+        </CapteurContainer>
+      </q-tab-panel>
+    </q-tab-panels>
 
   </q-page>
 </template>
@@ -28,14 +64,18 @@ export default {
       update: {
         interval: null,
         delay: 5000
-      }
+      },
+
+      tab: 'all'
     }
   },
 
   computed: {
     ...mapState('capteurs', ['capteurs']),
 
-    ...mapGetters('capteurs', ['capteursBySalle'])
+    ...mapGetters('capteurs', ['capteursBySalle']),
+
+    ...mapGetters('capteurs', ['favouriteCapteurs'])
   },
 
   methods: {
@@ -59,3 +99,10 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+.q-tab-panel {
+  overflow: hidden;
+}
+
+</style>
