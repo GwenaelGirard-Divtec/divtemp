@@ -125,6 +125,17 @@ const actions = {
       .finally(Loading.hide)
   },
 
+  refreshUser ({ commit }) {
+    const config = {
+      headers: { Authorization: 'Bearer ' + state.token }
+    }
+
+    tempapi.post('/refresh', {}, config)
+      .then(response => {
+        commit('setToken', response.data.access_token)
+      })
+  },
+
   /**
    * Enregistre un utilisateur et un token
    * @param commit
