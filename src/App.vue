@@ -19,7 +19,8 @@ export default {
 
   methods: {
     ...mapActions('auth', ['setUser']),
-    ...mapActions('auth', ['refreshUser'])
+    ...mapActions('auth', ['refreshUser']),
+    ...mapActions('capteurs', ['setFavouriteCapteurs'])
   },
   mounted () {
     const user = this.$q.localStorage.getItem('user')
@@ -31,11 +32,12 @@ export default {
         access_token: token
       }
       this.setUser(data)
+    }
 
-      const that = this
-      this.refrshing.interval = setInterval(() => {
-        that.refreshUser()
-      }, this.refrshing.delay)
+    const favouriteCapteurs = this.$q.localStorage.getItem('favouriteCapteurs')
+
+    if (favouriteCapteurs) {
+      this.setFavouriteCapteurs(favouriteCapteurs)
     }
   }
 }

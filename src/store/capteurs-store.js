@@ -1,9 +1,11 @@
 // State : données du magasin
 import { tempapi } from 'boot/axios'
+import { Loading, LocalStorage } from 'quasar'
 
 const state = {
   capteurs: null,
-  mesuresOfActualCapteurs: null
+  actualCapteur: null,
+  favouriteCapteurs: []
 }
 
 /*
@@ -15,8 +17,23 @@ const mutations = {
     state.capteurs = capteurs
   },
 
-  setMesures (state, mesures) {
-    state.mesuresOfActualCapteurs = mesures
+  setActualCapteur (state, capteur) {
+    state.actualCapteur = capteur
+    Loading.hide()
+  },
+
+  addCapteurToFavorite (state, idCapteur) {
+    state.favouriteCapteurs.push(idCapteur)
+    LocalStorage.set('favouriteCapteurs', state.favouriteCapteurs)
+  },
+
+  removeCapteurFromFavorite (state, idCapteur) {
+    state.favouriteCapteurs.splice(state.favouriteCapteurs.indexOf(idCapteur), 1)
+    LocalStorage.set('favouriteCapteurs', state.favouriteCapteurs)
+  },
+
+  setFavouriteCapteurs (state, favouriteCapteurs) {
+    state.favouriteCapteurs = favouriteCapteurs
   }
 }
 
@@ -36,15 +53,40 @@ const actions = {
       })
   },
 
-  getMesuresOfCapteurs ({ commit, rootState }, id) {
+  getActualCapteur ({ commit, state, rootState }, id) {
+    console.log('update')
     const config = {
       headers: { Authorization: 'Bearer ' + rootState.auth.token }
     }
 
+    if (!state.actualCapteur || (state.actualCapteur && state.actualCapteur.id.toString() !== id)) {
+      Loading.show()
+    }
+
     tempapi.get(`/capteurs/${id}/all`, config)
       .then(response => {
-        commit('setMesures', response.data)
+        commit('setActualCapteur', response.data)
       })
+  },
+
+  clearActualCapteur ({ commit }) {
+    commit('setActualCapteur', null)
+  },
+
+  addCapteurToFavorite ({ commit, state }, idCapteur) {
+    if (state.favouriteCapteurs.indexOf(idCapteur) === -1) {
+      commit('addCapteurToFavorite', idCapteur)
+    }
+  },
+
+  removeCapteurFromFavorite ({ commit, state }, idCapteur) {
+    if (state.favouriteCapteurs.indexOf(idCapteur) !== -1) {
+      commit('removeCapteurFromFavorite', idCapteur)
+    }
+  },
+
+  setFavouriteCapteurs ({ commit }, favouriteCapteurs) {
+    commit('setFavouriteCapteurs', favouriteCapteurs)
   }
 }
 

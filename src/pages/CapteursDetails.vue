@@ -1,21 +1,46 @@
 <template>
-<q-page padding>
-  {{this.$route.params.id}}
+<q-page padding v-if="actualCapteur && Object.entries(actualCapteur).length > 0">
+  <Capteur :complete="true" :capteur="actualCapteur"/>
 </q-page>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
+import Capteur from 'components/capteurs/Capteur.vue'
 
 export default {
   name: 'CapteursDetails',
+  components: { Capteur },
+
+  data () {
+    return {
+      update: {
+        interval: null,
+        delay: 5000
+      }
+    }
+  },
+
+  computed: {
+    ...mapState('capteurs', ['actualCapteur'])
+  },
 
   methods: {
-    ...mapActions('capteurs', ['getMesuresOfCapteurs'])
+    ...mapActions('capteurs', ['getActualCapteur', 'clearActualCapteur'])
+  },
+
+  beforeMount () {
+    this.getActualCapteur(this.$route.params.id)
   },
 
   mounted () {
-    this.getMesuresOfCapteurs()
+    this.update.interval = setInterval(() => {
+      this.getActualCapteur(this.$route.params.id)
+    }, this.update.delay)
+  },
+  unmounted () {
+    clearInterval(this.update.interval)
+    this.clearActualCapteur()
   }
 }
 </script>
