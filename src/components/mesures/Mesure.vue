@@ -19,7 +19,7 @@
     <q-table
       title="Mesures"
       :rows="this.complete ? this.filteredDate(this.filterDate) : this.mesures.slice(0, 5)"
-      :columns="this.complete ? this.columnsComplete : this.columns"
+      :columns="this.complete ? this.columnsComplete : this.columnsNormal"
       row-key="date"
       flat
       dense
@@ -44,15 +44,15 @@ export default {
 
       filterDate: null,
 
-      columns: [
+      columnsNormal: [
         {
           name: 'date',
           required: true,
           label: 'Date',
           align: 'left',
           field: row => row.date,
-          format: val => this.formatDate(val),
-          sortable: false
+          format: val => this.formatDateComplete(val),
+          sortable: true
         },
         {
           name: 'humidite',
@@ -73,8 +73,16 @@ export default {
           sortable: false
         }
       ],
-
       columnsComplete: [
+        {
+          name: 'id',
+          required: true,
+          label: 'Id',
+          align: 'left',
+          field: row => row.id,
+          format: val => val,
+          sortable: true
+        },
         {
           name: 'date',
           required: true,
@@ -112,6 +120,7 @@ export default {
           sortable: false
         }
       ]
+
     }
   },
 

@@ -155,7 +155,11 @@ Fonctionne comme les propriétés calculées
 Sert à calculer, trier, filtrer ou formater les donneés
  */
 const getters = {
-
+  isAdmin: state => {
+    if (state.user) {
+      return !!state.user.is_admin
+    }
+  }
 }
 
 /*

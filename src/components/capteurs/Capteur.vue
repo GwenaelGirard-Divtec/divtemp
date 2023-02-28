@@ -7,7 +7,10 @@
         <q-icon v-if="this.isThisCapteurFavourite" color="primary" name="star" size="sm" class="btn-fav-capteur q-mx-md" @click="setFavourite(false, this.capteur.id)"/>
         <q-icon v-else name="star_border" size="sm" color="primary" class="btn-fav-capteur q-mx-md" @click="setFavourite(true, this.capteur.id)"/>
       </div>
-      <span class="text-subtitle1 text-grey-6">Salle: {{ this.capteur.salle.nom }}</span>
+      <div class="row q-gutter-lg">
+        <span v-show="this.complete" class="text-subtitle1 text-grey-6">Salle : {{this.capteur.salle.nom}}</span>
+        <span v-show="this.complete" class="text-subtitle1 text-grey-6">{{ this.capteur.mesures.length }} mesures</span>
+      </div>
     </q-card-section>
     <q-separator/>
     <q-card-section>
