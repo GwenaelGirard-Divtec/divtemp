@@ -1,5 +1,5 @@
 <template>
-  <q-card>
+  <q-card :style="{maxWidth: this.maxWidth}" class="q-mx-auto">
     <q-card-section class="title row justify-between items-center">
       <div class="title row items-center">
         <q-btn v-show="this.complete" class="q-mr-sm" to="/" style="width: 25px" flat icon="chevron_left" />
@@ -23,7 +23,6 @@
 <script>
 import Mesure from 'components/mesures/Mesure.vue'
 import { mapActions, mapState } from 'vuex'
-import { toRaw } from 'vue'
 
 export default {
   name: 'Capteur',
@@ -47,8 +46,6 @@ export default {
       } else {
         this.removeCapteurFromFavorite(idCapteur)
       }
-
-      console.log(toRaw(this.$store.state.capteurs.favouriteCapteurs))
     }
   },
 
@@ -56,6 +53,12 @@ export default {
     capteur: {
       type: Object,
       required: true
+    },
+
+    maxWidth: {
+      type: String,
+      require: false,
+      default: '100%'
     },
 
     complete: {

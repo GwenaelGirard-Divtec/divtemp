@@ -18,7 +18,7 @@
 
     <q-separator />
 
-    <q-tab-panels v-model="tab" animated transition-prev="fade" transition-next="fade">
+    <q-tab-panels v-model="tab">
       <q-tab-panel name="all">
         <CapteurContainer v-for="salle in capteursBySalle" :key="salle" :title="salle.nom">
           <div class="row q-col-gutter-lg">

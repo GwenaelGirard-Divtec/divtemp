@@ -83,7 +83,6 @@ const actions = {
     Loading.show()
     tempapi.post('/logout', {}, config)
       .then(response => {
-        console.log(response)
         Loading.hide()
         successNotify(response.data.message)
       })
@@ -113,7 +112,6 @@ const actions = {
 
     tempapi.put('/updateme', payload.updates, config)
       .then(response => {
-        console.log(response)
         payload.updates = response.data
         commit('updateUser', payload)
       }).catch(function (error) {

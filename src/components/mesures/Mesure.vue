@@ -17,15 +17,15 @@
     </div>
 
     <q-table
-      :style="{height: this.complete ? 'calc(100vh - 372px)' : 'unset'}"
       title="Mesures"
       :rows="this.complete ? this.filteredDate(this.filterDate) : this.mesures.slice(0, 5)"
       :columns="this.complete ? this.columnsComplete : this.columns"
       row-key="date"
       flat
       dense
-      :virtual-scroll="this.complete"
-      :rows-per-page-options="[0]"
+      no-data-label="Aucune mesures..."
+      :hide-bottom="!this.complete"
+      :rows-per-page-options="this.complete ? [50, 100, 500, 0] : [0]"
 
     />
   </div>

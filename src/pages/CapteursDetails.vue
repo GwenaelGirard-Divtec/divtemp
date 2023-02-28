@@ -1,6 +1,6 @@
 <template>
 <q-page padding v-if="actualCapteur && Object.entries(actualCapteur).length > 0">
-  <Capteur :complete="true" :capteur="actualCapteur"/>
+  <Capteur max-width="calc(100% - 400px)" :complete="true" :capteur="actualCapteur"/>
 </q-page>
 </template>
 

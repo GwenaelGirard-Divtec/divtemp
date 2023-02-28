@@ -54,7 +54,6 @@ const actions = {
   },
 
   getActualCapteur ({ commit, state, rootState }, id) {
-    console.log('update')
     const config = {
       headers: { Authorization: 'Bearer ' + rootState.auth.token }
     }
