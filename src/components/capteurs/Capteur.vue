@@ -1,14 +1,14 @@
 <template>
-  <q-card :style="{maxWidth: this.maxWidth}" class="q-mx-auto">
+  <q-card flat :bordered="!this.complete" :style="{maxWidth: this.maxWidth}" class="q-mx-auto">
     <q-card-section class="title row justify-between items-center">
       <div class="title row items-center">
         <q-btn v-show="this.complete" class="q-mr-sm" to="/" style="width: 25px" flat icon="chevron_left" />
-        <span class="text-h5 text-weight-regular">{{ this.capteur.nom }}</span>
-        <q-icon v-if="this.isThisCapteurFavourite" color="primary" name="star" size="sm" class="btn-fav-capteur q-mx-md" @click="setFavourite(false, this.capteur.id)"/>
+        <span class="capteur-nom text-h5 text-weight-regular" @click="this.$router.push(`/capteurs/${this.capteur.id}`)">{{ this.capteur.nom }}</span>
+        <q-icon v-if="this.isThisCapteurFavourite" color="primary" name="star" size="sm" class="cursor-pointer q-mx-md" @click="setFavourite(false, this.capteur.id)"/>
         <q-icon v-else name="star_border" size="sm" color="primary" class="btn-fav-capteur q-mx-md" @click="setFavourite(true, this.capteur.id)"/>
       </div>
       <div class="row q-gutter-lg">
-        <span v-show="this.complete" class="text-subtitle1 text-grey-6">Salle : {{this.capteur.salle.nom}}</span>
+        <span v-show="!this.hideSalle" class="text-subtitle1 text-grey-6">Salle : {{this.capteur.salle.nom}}</span>
         <span v-show="this.complete" class="text-subtitle1 text-grey-6">{{ this.capteur.mesures.length }} mesures</span>
       </div>
     </q-card-section>
@@ -68,12 +68,25 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+
+    hideSalle: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
+
+.capteur-nom {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .btn-fav-capteur {
   &:hover {
     cursor: pointer;
