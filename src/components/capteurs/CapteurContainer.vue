@@ -1,6 +1,6 @@
 <template>
 <div class="full-width q-mb-xl">
-  <span v-show="this.title !== ''" class="text-h5 text-weight-medium" :id="title">{{title}}</span>
+  <span v-show="this.title && this.title !== ''" class="text-h5 text-weight-medium" :id="title">{{title}}</span>
   <q-separator v-show="this.title !== ''" />
   <div class="q-pt-sm">
     <slot></slot>
@@ -14,7 +14,7 @@ export default {
   props: {
     title: {
       type: String,
-      required: true
+      required: false
     }
   }
 }

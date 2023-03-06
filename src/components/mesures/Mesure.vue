@@ -24,7 +24,6 @@
       flat
       dense
       no-data-label="Aucune mesures..."
-      :hide-bottom="!this.complete"
       :rows-per-page-options="this.complete ? [50, 100, 500, 0] : [0]"
 
     />

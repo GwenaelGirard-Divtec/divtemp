@@ -1,14 +1,17 @@
 <template>
   <q-card flat :bordered="!this.complete" :style="{maxWidth: this.maxWidth}" class="q-mx-auto">
-    <q-card-section class="title row justify-between items-center">
+    <q-card-section class="title row no-wrap justify-between items-center">
       <div class="title row items-center">
         <q-btn v-show="this.complete" class="q-mr-sm" to="/" style="width: 25px" flat icon="chevron_left" />
         <span class="capteur-nom text-h5 text-weight-regular" @click="this.$router.push(`/capteurs/${this.capteur.id}`)">{{ this.capteur.nom }}</span>
         <q-icon v-if="this.isThisCapteurFavourite" color="primary" name="star" size="sm" class="cursor-pointer q-mx-md" @click="setFavourite(false, this.capteur.id)"/>
         <q-icon v-else name="star_border" size="sm" color="primary" class="btn-fav-capteur q-mx-md" @click="setFavourite(true, this.capteur.id)"/>
       </div>
-      <div class="row q-gutter-lg" v-show="this.capteur.mesures">
+      <div class="row q-gutter-lg no-wrap" v-show="this.capteur.mesures">
+        <!--
         <span v-if="!this.hideSalle && this.capteur.salle" class="text-subtitle1 text-grey-6">Salle : {{this.capteur.salle.nom}}</span>
+        -->
+        <span>Salle : B1&#8209;01</span>
         <span v-if="this.complete && this.capteur.mesures" class="text-subtitle1 text-grey-6">{{ this.capteur.mesures.length }} mesures</span>
       </div>
     </q-card-section>

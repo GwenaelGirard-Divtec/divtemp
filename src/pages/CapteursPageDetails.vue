@@ -1,6 +1,8 @@
 <template>
 <q-page padding v-if="actualCapteur && Object.entries(actualCapteur).length > 0">
-  <Capteur max-width="calc(100% - 400px)" :complete="true" :capteur="actualCapteur"/>
+  <div class="capteur-wrapper">
+    <Capteur :complete="true" :capteur="actualCapteur"/>
+  </div>
 </q-page>
 </template>
 
@@ -45,6 +47,16 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.capteur-wrapper {
+  margin-inline: 20%;
 
+  @media screen and (max-width: 800px) {
+    margin-inline: 10%;
+  }
+
+  @media screen and (max-width: 600px) {
+    margin-inline: 0;
+  }
+}
 </style>
