@@ -1,10 +1,10 @@
 <template>
 <div class="favourites-tab">
   <div class="row q-col-gutter-lg" v-if="this.favouriteCapteurs.length > 0">
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4" v-for="capteur in this.favouriteCapteurs"
-         :key="capteur.id">
-      <capteur :capteur="capteur"/>
-    </div>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4" v-for="capteur in this.favouriteCapteurs"
+           :key="capteur.id">
+        <capteur :capteur="capteur"/>
+      </div>
   </div>
 
   <notification icon="upcoming" v-else>Aucun capteurs favoris</notification>

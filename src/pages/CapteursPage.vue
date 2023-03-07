@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import CapteursTab from 'components/capteurs/tabs/CapteursTab.vue'
 import SallesTab from 'components/capteurs/tabs/SallesTab.vue'
 import FavouritesTab from 'components/capteurs/tabs/FavouritesTab.vue'
@@ -55,6 +55,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters('capteurs', ['favouriteCapteurs'])
   },
 
   methods: {

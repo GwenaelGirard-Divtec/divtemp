@@ -1,11 +1,33 @@
 <template>
   <div class="salles-tab">
     <div v-if="this.capteurs">
-      <q-splitter v-model="splitterModel" :limits="[15, 15]">
+      <q-splitter v-model="splitterModel" :horizontal="$q.screen.lt.md" :vertical="$q.screen.gt.sm" :limits="[15, 15]">
         <template v-slot:before>
-          <q-tabs v-model="sallesTab" vertical class="text-black">
+          <q-tabs v-model="sallesTab" :horizontal="$q.screen.lt.md" :vertical="$q.screen.gt.sm" class="gt-sm text-black">
             <q-tab v-for="salle in salles" :key="salle" :name="salle.nom" :label="salle.nom"/>
           </q-tabs>
+
+            <q-select
+              class="lt-md"
+              filled
+              v-model="this.sallesTab"
+              clearable
+              use-input
+              input-debounce="0"
+              label="Salle"
+              :options="options"
+              @filter="this.filterFn"
+              behavior="dialog"
+            >
+              <template v-slot:no-option>
+                <q-item>
+                  <q-item-section class="text-grey">
+                    No results
+                  </q-item-section>
+                </q-item>
+              </template>
+            </q-select>
+
         </template>
         <template v-slot:after>
           <q-tab-panels v-model="sallesTab" swipeable vertical ref="salleTabPannel">
@@ -28,6 +50,8 @@
                 <notification v-else>Aucun capteurs</notification>
             </q-tab-panel>
           </q-tab-panels>
+
+          <notification v-if="this.sallesTab === null">Choisissez une salle</notification>
         </template>
       </q-splitter>
     </div>
@@ -70,13 +94,17 @@ export default {
       splitterModel: 15,
       sallesTab: null,
       salleToModify: null,
-      formPlatState: false
+      formPlatState: false,
+
+      options: this.getSimpleSalles,
+      test: ''
     }
   },
 
   computed: {
     ...mapGetters('capteurs', ['capteursBySalle']),
     ...mapGetters('auth', ['isAdmin']),
+    ...mapGetters('salles', ['getSimpleSalles']),
     ...mapState('capteurs', ['capteurs']),
     ...mapState('salles', ['salles']),
 
@@ -89,6 +117,20 @@ export default {
   methods: {
 
     ...mapActions('salles', ['deleteSalle', 'getAllSalles']),
+
+    filterFn (val, update) {
+      if (val === '') {
+        update(() => {
+          this.options = this.getSimpleSalles
+        })
+        return
+      }
+
+      update(() => {
+        const needle = val.toLowerCase()
+        this.options = this.getSimpleSalles.filter(v => v.toLowerCase().indexOf(needle) > -1)
+      })
+    },
 
     goToSalle (nom) {
       this.sallesTab = nom
@@ -113,7 +155,7 @@ export default {
           title: 'Suppression de la salle',
           message: `Êtes-vous sûr de vouloir supprimer la salle "${salle.nom}" ?`,
           ok: 'Oui',
-          cancel: 'Non',a
+          cancel: 'Non',
           persistent: true
         }).onOk(async () => {
           this.deleteSalle(salle.id)

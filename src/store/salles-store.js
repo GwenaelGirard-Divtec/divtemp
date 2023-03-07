@@ -103,6 +103,9 @@ Fonctionne comme les propriétés calculées
 Sert à calculer, trier, filtrer ou formater les donneés
  */
 const getters = {
+  getSimpleSalles: state => {
+    return state.salles.map(({ id, ...item }) => item.nom)
+  }
 }
 
 /*
