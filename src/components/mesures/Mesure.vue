@@ -16,13 +16,16 @@
       </q-input>
     </div>
 
+    <span class="text-subtitle1 text-weight-medium">{{ this.complete ? 'Mesures' : 'Dernières mesures' }}</span>
+
     <q-table
-      title="Mesures"
-      :rows="this.complete ? this.filteredDate(this.filterDate) : this.mesures.slice(0, 5)"
+      :rows="this.complete ? this.filteredDate(this.filterDate) : this.mesures.slice(0, 2)"
       :columns="this.complete ? this.columnsComplete : this.columnsNormal"
       row-key="date"
       flat
       dense
+      class="bg-grey-1"
+      :hide-bottom="!this.complete"
       no-data-label="Aucune mesures..."
       :rows-per-page-options="this.complete ? [50, 100, 500, 0] : [0]"
 

@@ -31,7 +31,8 @@
       </q-toolbar>
 
       <q-tabs align="left">
-        <q-route-tab to="/" label="Accueil" exact />
+        <q-route-tab to="/" label="Capteurs" exact />
+        <q-route-tab to="/salles" label="Salles" exact />
       </q-tabs>
 
     </q-header>

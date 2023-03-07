@@ -1,87 +1,58 @@
 <template>
-  <q-page class="padding">
-    <q-tabs
-      v-model="tab"
-      class="text-grey"
-      active-color="primary"
-      indicator-color="primary"
-      align="justify"
-      narrow-indicator
-    >
-      <q-tab name="capteurs" label="Capteurs"/>
-      <q-tab name="salles" label="Salles"/>
-      <q-tab name="favourites" label="Capteurs favoris"/>
-    </q-tabs>
+  <q-page padding>
+    <div class="favoris q-mb-xl" v-if="this.favouriteCapteurs.length > 0">
+      <div class="row justify-between items-center">
+        <div class="row items-center q-gutter-sm">
+          <span class="text-h5 text-weight-medium">Favoris</span>
+        </div>
+      </div>
+      <q-separator class="q-my-sm"/>
+      <div class="row q-col-gutter-lg">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4" v-for="capteur in this.favouriteCapteurs"
+             :key="capteur.id">
+          <capteur :capteur="capteur"/>
+        </div>
+      </div>
+    </div>
 
-    <q-tab-panels v-model="tab" class="full-height" animated keep-alive>
-      <q-tab-panel name="capteurs">
-        <CapteursTab/>
-      </q-tab-panel>
+    <div class="capteurs">
+      <div class="row justify-between items-center">
+        <div class="row items-center q-gutter-sm">
+          <span class="text-h5 text-weight-medium">Tous les capteurs</span>
+        </div>
 
-      <q-tab-panel name="salles" class="col column">
-        <SallesTab/>
-      </q-tab-panel>
+        <div class="search">
 
-      <q-tab-panel name="favourites">
-        <FavouritesTab/>
-      </q-tab-panel>
-    </q-tab-panels>
+        </div>
+      </div>
+      <q-separator class="q-my-sm"/>
+      <div class="row q-col-gutter-lg" v-if="this.capteurs">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4" v-for="capteur in this.capteurs" :key="capteur.id">
+          <capteur :capteur="capteur"/>
+        </div>
+      </div>
+
+      <notification icon="upcoming" v-else>Aucun capteurs</notification>
+    </div>
   </q-page>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
-import CapteursTab from 'components/capteurs/tabs/CapteursTab.vue'
-import SallesTab from 'components/capteurs/tabs/SallesTab.vue'
-import FavouritesTab from 'components/capteurs/tabs/FavouritesTab.vue'
+import Notification from 'components/notification.vue'
+import Capteur from 'components/capteurs/Capteur.vue'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'CapteursPage',
-  components: {
-    FavouritesTab,
-    SallesTab,
-    CapteursTab
-  },
-
-  data () {
-    return {
-      update: {
-        interval: null,
-        delay: 5000
-      },
-
-      tab: 'capteurs'
-    }
-  },
+  components: { Capteur, Notification },
 
   computed: {
+    ...mapState('capteurs', ['capteurs']),
     ...mapGetters('capteurs', ['favouriteCapteurs'])
-  },
-
-  methods: {
-    ...mapActions('capteurs', ['getAllCapteurs']),
-    ...mapActions('salles', ['getAllSalles'])
-  },
-
-  mounted () {
-    this.getAllCapteurs()
-    this.getAllSalles()
-
-    this.update.interval = setInterval(() => {
-      this.getAllCapteurs()
-      this.getAllSalles()
-    }, this.update.delay)
-  },
-
-  unmounted () {
-    clearInterval(this.update.interval)
   }
 }
 </script>
 
-<style scoped lang="scss">
-.q-tab-panel {
-  overflow: hidden;
-}
+<style scoped>
 
 </style>

@@ -19,7 +19,6 @@
     <q-card-section v-if="this.capteur.mesures">
       <Mesure :mesures="this.capteur.mesures" :complete="complete"></Mesure>
     </q-card-section>
-    <q-separator/>
     <q-card-actions class="row justify-end" v-show="!this.complete">
       <q-btn flat label="voir plus" :to="'/capteurs/' + this.capteur.id"></q-btn>
     </q-card-actions>
