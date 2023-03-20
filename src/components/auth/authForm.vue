@@ -58,6 +58,11 @@ export default {
   },
 
   methods: {
+    /**
+     * Vérifie que l'e-mail à une forme valide avec l'aide d'une regex
+     * @param email email à vérifier
+     * @returns {boolean} true si l'email est valide, sinon false
+     */
     validateEmail (email) {
       // Source : https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
       const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/

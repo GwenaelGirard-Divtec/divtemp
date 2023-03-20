@@ -28,21 +28,21 @@ export default {
   },
 
   methods: {
-    ...mapActions('capteurs', ['getActualCapteur', 'clearActualCapteur'])
+    ...mapActions('capteurs', ['GET_ACTUAL_CAPTEURS', 'CLEAR_ACTUAL_CAPTEUR'])
   },
 
   beforeMount () {
-    this.getActualCapteur(this.$route.params.id)
+    this.GET_ACTUAL_CAPTEURS(this.$route.params.id)
   },
 
   mounted () {
     this.update.interval = setInterval(() => {
-      this.getActualCapteur(this.$route.params.id)
+      this.GET_ACTUAL_CAPTEURS(this.$route.params.id)
     }, this.update.delay)
   },
   unmounted () {
     clearInterval(this.update.interval)
-    this.clearActualCapteur()
+    this.CLEAR_ACTUAL_CAPTEUR()
   }
 }
 </script>

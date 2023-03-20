@@ -19,7 +19,7 @@
     <span class="text-subtitle1 text-weight-medium">{{ this.complete ? 'Mesures' : 'Dernières mesures' }}</span>
 
     <q-table
-      :rows="this.complete ? this.filteredDate(this.filterDate) : this.mesures.slice(0, 2)"
+      :rows="this.complete ? this.MesuresOfDate(this.filterDate) : this.mesures.slice(0, 2)"
       :columns="this.complete ? this.columnsComplete : this.columnsNormal"
       row-key="date"
       flat
@@ -53,7 +53,7 @@ export default {
           label: 'Date',
           align: 'left',
           field: row => row.date,
-          format: val => this.formatDateComplete(val),
+          format: val => this.formatDate(val),
           sortable: true
         },
         {
@@ -91,7 +91,7 @@ export default {
           label: 'Date',
           align: 'left',
           field: row => row.date,
-          format: val => this.formatDateComplete(val),
+          format: val => this.formatDate(val),
           sortable: true
         },
         {
@@ -140,17 +140,22 @@ export default {
   },
 
   methods: {
+    /**
+     * Formate une date au format DD.MM.YYYY - HH:MM (ex : 14.03.2023 - 08:55)
+     * @param dateStr chaine de caractère de la date à formater
+     * @returns {string} chaine de caractère contenant la date formater
+     */
     formatDate (dateStr) {
-      const dateDate = new Date(dateStr)
-      return date.formatDate(dateDate, 'DD.MM.YY - HH:MM')
-    },
-
-    formatDateComplete (dateStr) {
       const dateDate = new Date(dateStr)
       return date.formatDate(dateDate, 'DD.MM.YYYY - HH:MM')
     },
 
-    filteredDate (dateToFilter) {
+    /**
+     * Récupère toutes les mesures d'une date donnée
+     * @param dateToFilter date des mesures que l'on souhaite
+     * @returns {*[]} tableau de mesures filtrées
+     */
+    MesuresOfDate (dateToFilter) {
       if (dateToFilter === null || dateToFilter === '') {
         return this.mesures
       } else {

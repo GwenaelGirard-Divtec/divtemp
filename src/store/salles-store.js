@@ -5,31 +5,30 @@ import { errorDialog } from 'src/functions/erreurs'
 import { successNotify } from 'src/functions/notification'
 
 const state = {
-  salles: [],
-  actualSalle: []
+  salles: []
 }
 
-/*
-Mutations : méthodes qui manipulent les données
-Les mutations ne peuvent pas être asynchrones !!!
- */
 const mutations = {
+  /**
+   * Change la liste des salles dans le state
+   * @param state
+   * @param salles
+   */
   setSalles (state, salles) {
     Loading.hide()
     state.salles = salles
-  },
-
-  setActualSalle (state, actualSalle) {
-    state.actualSalle = actualSalle
   }
 }
 
-/*
-Actions : méthodes du magasin qui font appel aux mutations
-Elles peuvent être asynchrones !
- */
 const actions = {
-  getAllSalles ({ commit, state, rootState }) {
+  /**
+   * Récupère la liste de toutes les salles de la base de donnée
+   * @param commit
+   * @param state
+   * @param rootState
+   * @constructor
+   */
+  GET_ALL_SALLES ({ commit, state, rootState }) {
     if (!state.salles) {
       Loading.show()
     }
@@ -44,7 +43,15 @@ const actions = {
       })
   },
 
-  createSalle ({ dispatch, rootState }, salle) {
+  /**
+   * Ajoute une salle dans la base et retourne la réponse de l'API
+   * @param dispatch
+   * @param rootState
+   * @param salle salle à ajouter
+   * @returns {Promise<AxiosResponse<any>>} réponse de l'API
+   * @constructor
+   */
+  CREATE_SALLE ({ dispatch, rootState }, salle) {
     const config = {
       headers: { Authorization: 'Bearer ' + rootState.auth.token }
     }
@@ -61,7 +68,15 @@ const actions = {
       })
   },
 
-  modifySalle ({ dispatch, rootState }, salle) {
+  /**
+   * Modifie une salle dans la base de donnée et retourne la réponse de l'API
+   * @param dispatch
+   * @param rootState
+   * @param salle sallle à modifier
+   * @returns {Promise<AxiosResponse<any>>} réponse de l'API
+   * @constructor
+   */
+  MODIFY_SALLE ({ dispatch, rootState }, salle) {
     const config = {
       headers: { Authorization: 'Bearer ' + rootState.auth.token }
     }
@@ -78,7 +93,14 @@ const actions = {
       })
   },
 
-  deleteSalle ({ dispatch, rootState }, idSalle) {
+  /**
+   * Supprime une salle dans la base de donnée
+   * @param dispatch
+   * @param rootState
+   * @param idSalle id de la salle à supprimer
+   * @constructor
+   */
+  DELETE_SALLE ({ dispatch, rootState }, idSalle) {
     Loading.show()
     const config = {
       headers: { Authorization: 'Bearer ' + rootState.auth.token }
@@ -97,23 +119,17 @@ const actions = {
   }
 }
 
-/*
-Getters : retourne les données du magasin
-Fonctionne comme les propriétés calculées
-Sert à calculer, trier, filtrer ou formater les donneés
- */
 const getters = {
+  /**
+   * Récupère la liste des noms des salles (uniquement les noms)
+   * @param state
+   * @returns {(string|string|*)[]}
+   */
   getSimpleSalles: state => {
     return state.salles.map(({ id, ...item }) => item.nom)
   }
 }
 
-/*
-Exporte les constantes, variables du fichier
-On pourra ainsi les récupérer, les importer dans un autre fichier JS.
-
-namespace: true, ajoute un namespace à notre objet retourné.
- */
 export default {
   namespaced: true,
   state,

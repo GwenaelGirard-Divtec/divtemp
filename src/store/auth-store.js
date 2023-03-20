@@ -9,10 +9,6 @@ const state = {
   token: null
 }
 
-/*
-Mutations : méthodes qui manipulent les données
-Les mutations ne peuvent pas être asynchrones !!!
- */
 const mutations = {
   /**
    * Enregistre un utilisateur dans le magasin ET dans le localStorage
@@ -46,10 +42,6 @@ const mutations = {
   }
 }
 
-/*
-Actions : méthodes du magasin qui font appel aux mutations
-Elles peuvent être asynchrones !
- */
 const actions = {
   /**
    * Connecte un utilisateur auprès de l'API
@@ -57,12 +49,15 @@ const actions = {
    * @param state
    * @param payload informations de connexion de l'utilisateur
    */
-  login ({ dispatch, state }, payload) {
+  LOGIN ({ dispatch, state }, payload) {
     Loading.show()
     tempapi.post('/login', payload)
       .then(response => {
-        dispatch('setUser', response.data)
+        console.log(response.data)
+        dispatch('SET_USER', response.data)
         successNotify('Bienvenue ' + state.user.prenom + ' !')
+        dispatch('capteurs/GET_ALL_CAPTEURS', null, { root: true })
+        dispatch('salles/GET_ALL_SALLES', null, { root: true })
       })
       .catch(error => {
         Loading.hide()
@@ -76,7 +71,7 @@ const actions = {
    * @param commit
    * @param state
    */
-  logout ({ commit, state }) {
+  LOGOUT ({ commit, state }) {
     const config = {
       headers: { Authorization: 'Bearer ' + state.token }
     }
@@ -103,7 +98,13 @@ const actions = {
       })
   },
 
-  updateUser ({ commit, state }, payload) {
+  /**
+   * Modifie les informations d'un utilisateur
+   * @param commit
+   * @param state
+   * @param payload modifications a effectués
+   */
+  UPDATE_USER ({ commit, state }, payload) {
     Loading.show()
 
     const config = {
@@ -123,15 +124,35 @@ const actions = {
       .finally(Loading.hide)
   },
 
-  refreshUser ({ commit }) {
+  /**
+   * Rafraichis le token de l'utilisateur et retourne un boolean qui représente l'état du token
+   * @param commit
+   * @param state
+   * @returns {Promise<boolean>} true si le token a bien été rafraichis, sinon false
+   */
+  REFRESH_USER ({ commit, state }) {
     const config = {
       headers: { Authorization: 'Bearer ' + state.token }
     }
 
-    tempapi.post('/refresh', {}, config)
+    return tempapi.post('/refresh', {}, config)
       .then(response => {
         commit('setToken', response.data.access_token)
+        return true
       })
+      .catch(() => {
+        errorDialog('Vous avez été déconnecté')
+        this.$router.push('/auth')
+
+        // efface les valeurs du magasin
+        commit('setUser', null)
+        commit('setToken', null)
+
+        // efface le localstorage
+        LocalStorage.clear()
+        return false
+      }
+      )
   },
 
   /**
@@ -140,7 +161,7 @@ const actions = {
    * @param dispatch
    * @param data information de l'utilisateur et du token
    */
-  setUser ({ commit, dispatch }, data) {
+  SET_USER ({ commit, dispatch }, data) {
     commit('setUser', data.user)
     commit('setToken', data.access_token)
 
@@ -149,12 +170,12 @@ const actions = {
   }
 }
 
-/*
-Getters : retourne les données du magasin
-Fonctionne comme les propriétés calculées
-Sert à calculer, trier, filtrer ou formater les donneés
- */
 const getters = {
+  /**
+   * Retourne si l'utilisateur est admin ou non
+   * @param state
+   * @returns {boolean} true s'il est admin, sinon false
+   */
   isAdmin: state => {
     if (state.user) {
       return !!state.user.is_admin
@@ -162,12 +183,6 @@ const getters = {
   }
 }
 
-/*
-Exporte les constantes, variables du fichier
-On pourra ainsi les récupérer, les importer dans un autre fichier JS.
-
-namespace: true, ajoute un namespace à notre objet retourné.
- */
 export default {
   namespaced: true,
   state,

@@ -37,19 +37,28 @@ export default {
 
     ...mapState('capteurs', ['favouriteCapteurs']),
 
+    /**
+     * Test si le capteur actuel fais partie des favoris
+     * @returns {boolean} true s'il fait partie des favoris, sinon false
+     */
     isThisCapteurFavourite () {
       return this.favouriteCapteurs.indexOf(this.capteur.id) !== -1
     }
   },
 
   methods: {
-    ...mapActions('capteurs', ['addCapteurToFavorite', 'removeCapteurFromFavorite']),
+    ...mapActions('capteurs', ['ADD_CAPTEUR_TO_FAVORITES', 'REMOVE_CAPTEUR_FROM_FAVOURITES']),
 
+    /**
+     * Ajoute ou supprime un capteur en favoris
+     * @param state true : ajoute, false : supprime
+     * @param idCapteur id du capteur à mettre en favoris
+     */
     setFavourite (state, idCapteur) {
       if (state) {
-        this.addCapteurToFavorite(idCapteur)
+        this.ADD_CAPTEUR_TO_FAVORITES(idCapteur)
       } else {
-        this.removeCapteurFromFavorite(idCapteur)
+        this.REMOVE_CAPTEUR_FROM_FAVOURITES(idCapteur)
       }
     }
   },

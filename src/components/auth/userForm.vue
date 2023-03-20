@@ -9,7 +9,7 @@
       <q-form @submit.prevent="this.submitForm" class="column items-stretch">
         <div class="column" style="max-width: 600px">
           <q-img
-            :src="this.user.photo ? this.user.photo : require('src/assets/noPP.png')"
+            :src="this.user.photo ? this.user.photo : require('assets/no_profile_pic.png')"
             :ratio="1"
             class="q-mx-auto q-mb-md"
             @error="this.imageValidation = false"
@@ -110,6 +110,10 @@ export default {
   },
 
   computed: {
+    /**
+     * Récupère les initiales du nom
+     * @returns {string} initiales
+     */
     initiales () {
       let initiales = ''
       if (this.user.prenom.length > 0 && this.user.nom.length > 0) {
@@ -124,29 +128,41 @@ export default {
 
   methods: {
 
-    ...mapActions('auth', ['updateUser']),
+    ...mapActions('auth', ['UPDATE_USER']),
 
+    /**
+     * Vérifie que l'e-mail à une forme valide avec l'aide d'une regex
+     * @param email email à vérifier
+     * @returns {boolean} true si l'email est valide, sinon false
+     */
     validateEmail (email) {
       // Source : https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
       const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       return re.test(String(email).toLowerCase())
     },
 
+    /**
+     * Envoie le formulaire
+     */
     submitForm () {
       // Construction du payload
       const payload = {
         id: this.user.id,
-        updates: this.user // Passe toutes les propriétés du plat
+        updates: this.user // Passe toutes les propriétés de l'utilisateur
       }
 
-      this.updateUser(payload)
+      // envoie le payload au magasin
+      this.UPDATE_USER(payload)
 
+      // ferme le formulaire
       this.$emit('closeUserForm')
     }
   },
 
   mounted () {
+    // si nous sommes en modification
     if (this.userToModify) {
+      // clone l'utilisateur a modifier dans une nouvelles variables
       this.user = Object.assign({}, this.userToModify)
       this.user.is_admin = !!this.user.is_admin
     }

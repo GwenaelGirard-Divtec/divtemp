@@ -116,7 +116,7 @@ export default {
 
   methods: {
 
-    ...mapActions('salles', ['deleteSalle', 'getAllSalles']),
+    ...mapActions('salles', ['DELETE_SALLE', 'GET_ALL_SALLES']),
 
     filterFn (val, update) {
       if (val === '') {
@@ -158,7 +158,7 @@ export default {
           cancel: 'Non',
           persistent: true
         }).onOk(async () => {
-          this.deleteSalle(salle.id)
+          this.DELETE_SALLE(salle.id)
           this.sallesTab = this.salles[0].nom
         })
       }

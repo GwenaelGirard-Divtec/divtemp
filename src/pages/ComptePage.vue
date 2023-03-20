@@ -11,7 +11,7 @@
       <q-card-section class="row wrap">
         <q-img
           class="col-xs-12 col-sm-6 q-mx-auto"
-          :src="this.user.photo ? this.user.photo : require('src/assets/noPP.png')"
+          :src="this.user.photo ? this.user.photo : require('assets/no_profile_pic.png')"
           :ratio="1"
         />
         <div
@@ -63,12 +63,10 @@ export default {
   computed: {
     ...mapState('auth', ['user']),
 
-    initiales () {
-      const first = this.user.prenom[0]
-      const second = this.user.nom[0]
-      return (first + second).toUpperCase()
-    },
-
+    /**
+     * Renvoie la date de création de l'utilisateur et la format dans le but de l'afficher
+     * @returns {string} date de création formatée
+     */
     formatedCreatedDate () {
       const createdDate = new Date(this.user.created_at)
       return date.formatDate(createdDate, 'DD MMMM YYYY', {
@@ -79,8 +77,11 @@ export default {
 
   methods: {
 
-    ...mapActions('auth', ['logout']),
+    ...mapActions('auth', ['LOGOUT']),
 
+    /**
+     * Se déconnecte après avoir demandé confirmation à l'utilisateur
+     */
     deconnecter () {
       Dialog.create({
         title: 'Se déconnecter',
@@ -89,7 +90,7 @@ export default {
         cancel: 'Non',
         persistent: true
       }).onOk(() => {
-        this.logout()
+        this.LOGOUT()
       })
     }
   }

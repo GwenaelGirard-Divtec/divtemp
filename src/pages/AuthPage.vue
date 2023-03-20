@@ -1,6 +1,6 @@
 <template>
   <q-page padding class="flex flex-center">
-    <auth-form @formsubmit="login"/>
+    <auth-form @formsubmit="LOGIN"/>
   </q-page>
 </template>
 
@@ -12,7 +12,7 @@ export default {
   name: 'AuthPage',
   components: { AuthForm },
   methods: {
-    ...mapActions('auth', ['login'])
+    ...mapActions('auth', ['LOGIN'])
   }
 }
 </script>

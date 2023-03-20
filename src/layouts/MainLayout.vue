@@ -5,7 +5,7 @@
       <q-toolbar>
         <q-toolbar-title>
           <q-avatar rounded >
-            <img :src="require('src/assets/divtecLogo.png')">
+            <img :src="require('assets/logo_divtec.png')">
           </q-avatar>
           DivTemp
         </q-toolbar-title>
