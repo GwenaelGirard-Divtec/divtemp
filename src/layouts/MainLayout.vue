@@ -14,7 +14,6 @@
           v-if="!user"
           to="/auth"
           flat
-          icon-right="account_circle"
           label="Se connecter"
           class="absolute-right"
         />

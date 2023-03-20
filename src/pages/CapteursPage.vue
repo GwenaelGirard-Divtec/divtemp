@@ -1,18 +1,19 @@
 <template>
   <q-page padding>
-    <div class="favoris q-mb-xl" v-if="this.favouriteCapteurs.length > 0">
+    <div class="favoris q-mb-xl">
       <div class="row justify-between items-center">
         <div class="row items-center q-gutter-sm">
           <span class="text-h5 text-weight-medium">Favoris</span>
         </div>
       </div>
       <q-separator class="q-my-sm"/>
-      <div class="row q-col-gutter-lg">
+      <div class="row q-col-gutter-lg" v-if="this.favouriteCapteurs.length > 0">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4" v-for="capteur in this.favouriteCapteurs"
              :key="capteur.id">
           <capteur :capteur="capteur"/>
         </div>
       </div>
+      <notification dense v-else icon="upcoming">Aucun capteur favoris</notification>
     </div>
 
     <div class="capteurs">
