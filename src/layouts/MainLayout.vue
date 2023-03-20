@@ -1,116 +1,70 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
+  <q-layout view="hHh lpR fFf">
 
+    <q-header bordered class="bg-primary text-white" height-hint="98">
+      <q-toolbar class="no-padding">
         <q-toolbar-title>
-          Quasar App
+          <q-avatar rounded class="q-ml-md">
+            <img :src="require('assets/logo_divtec.png')">
+          </q-avatar>
+          DivTemp
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
-      </q-toolbar>
-    </q-header>
-
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-    >
-      <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
-
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
+        <q-btn
+          v-if="!user"
+          to="/auth"
+          flat
+          label="Se connecter"
+          class="absolute-right"
         />
-      </q-list>
-    </q-drawer>
+
+        <div v-else class="row content-center">
+          <q-btn
+            to="/account"
+            flat
+            :label="user.prenom + '.' + user.nom[0].toUpperCase()"
+          >
+            <q-avatar circle class="q-ml-md">
+              <img :src="this.user.photo ? this.user.photo : require('assets/no_profile_pic.png')">
+            </q-avatar>
+          </q-btn>
+        </div>
+
+      </q-toolbar>
+
+      <q-tabs align="left">
+        <q-route-tab to="/" label="Capteurs" exact />
+        <q-route-tab to="/salles" label="Salles" exact />
+      </q-tabs>
+
+    </q-header>
 
     <q-page-container>
       <router-view />
     </q-page-container>
+
+    <q-footer bordered class="bg-dark text-grey-5">
+      <q-toolbar>
+        <q-toolbar-title>
+          <div class="text-subtitle1">Copyright &copy; {{ new Date().getFullYear() }} Gwenaël Girard</div>
+        </q-toolbar-title>
+      </q-toolbar>
+    </q-footer>
+
   </q-layout>
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
+import { mapState } from 'vuex'
 
-const linksList = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-]
-
-export default defineComponent({
+export default {
   name: 'MainLayout',
-
-  components: {
-    EssentialLink
-  },
-
-  setup () {
-    const leftDrawerOpen = ref(false)
-
-    return {
-      essentialLinks: linksList,
-      leftDrawerOpen,
-      toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
-    }
+  computed: {
+    ...mapState('auth', ['user'])
   }
-})
+}
 </script>
+
+<style scoped>
+
+</style>

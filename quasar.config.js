@@ -11,6 +11,7 @@
 const ESLintPlugin = require('eslint-webpack-plugin')
 
 const { configure } = require('quasar/wrappers')
+const { LocalStorage } = require('quasar')
 
 module.exports = configure(function (ctx) {
   return {
@@ -25,7 +26,8 @@ module.exports = configure(function (ctx) {
     // https://v2.quasar.dev/quasar-cli-webpack/boot-files
     boot: [
 
-      'axios'
+      'axios',
+      'navigation-guards'
     ],
 
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-css
@@ -89,6 +91,7 @@ module.exports = configure(function (ctx) {
 
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-framework
     framework: {
+      cssAddon: true,
       config: {},
 
       // iconSet: 'material-icons', // Quasar icon set
@@ -102,7 +105,12 @@ module.exports = configure(function (ctx) {
       // directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: [
+        'Notify',
+        'Dialog',
+        'Loading',
+        'LocalStorage'
+      ]
     },
 
     // animations: 'all', // --- includes all animations
