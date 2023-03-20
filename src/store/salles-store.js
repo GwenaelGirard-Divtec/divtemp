@@ -58,7 +58,7 @@ const actions = {
 
     return tempapi.post('/salles', salle, config)
       .then(response => {
-        dispatch('getAllSalles')
+        dispatch('GET_ALL_SALLES')
         successNotify('Salle créée !')
         return response
       })
@@ -83,7 +83,7 @@ const actions = {
 
     return tempapi.put(`/salles/${salle.id}`, salle, config)
       .then(response => {
-        dispatch('getAllSalles')
+        dispatch('GET_ALL_SALLES')
         successNotify('Salle modifiée')
         return response
       })
@@ -106,10 +106,10 @@ const actions = {
       headers: { Authorization: 'Bearer ' + rootState.auth.token }
     }
 
-    tempapi.delete(`/salles/${idSalle}`, config)
+    return tempapi.delete(`/salles/${idSalle}`, config)
       .then(response => {
         Loading.hide()
-        dispatch('getAllSalles')
+        dispatch('GET_ALL_SALLES')
       })
       .catch(error => {
         Loading.hide()

@@ -12,7 +12,6 @@
             filled
             v-model="this.sallesTab"
             clearable
-            use-input
             input-debounce="0"
             label="Salle"
             :options="options"
@@ -63,11 +62,11 @@
     </q-page-sticky>
 
     <q-dialog
-      v-model="formPlatState"
+      v-model="formSalleState"
       persistent
     >
       <SallesForm
-        @closeForm="changeFormPlatState(false)"
+        @closeForm="changeFormSalleState(false)"
         @goToSalle="goToSalle"
         :salle-to-modify="salleToModify"
       />
@@ -94,7 +93,7 @@ export default {
       splitterModel: 15,
       sallesTab: null,
       salleToModify: null,
-      formPlatState: false,
+      formSalleState: false,
 
       options: this.getSimpleSalles,
       test: ''
@@ -139,14 +138,15 @@ export default {
     modifySalle (id) {
       this.salleToModify = { ...this.salles.filter((salle) => salle.id === id)[0] }
       nextTick(() => {
-        this.changeFormPlatState(true)
+        this.changeFormSalleState(true)
       })
     },
 
     addSalle () {
       this.salleToModify = null
-      this.changeFormPlatState(true)
+      this.changeFormSalleState(true)
     },
+
     confirmDeleteSalle (salle) {
       if (this.getCapteurOfSalle) {
         errorDialog('Vous ne pouvez pas supprimer une salle qui contient un ou plusieurs capteurs !')
@@ -164,8 +164,8 @@ export default {
       }
     },
 
-    changeFormPlatState (state) {
-      this.formPlatState = state
+    changeFormSalleState (state) {
+      this.formSalleState = state
     }
   },
 

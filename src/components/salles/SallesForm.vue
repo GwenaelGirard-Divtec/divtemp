@@ -58,7 +58,6 @@ export default {
   },
 
   methods: {
-
     ...mapActions('salles', ['CREATE_SALLE', 'MODIFY_SALLE']),
 
     /**

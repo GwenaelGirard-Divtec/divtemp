@@ -2,9 +2,9 @@
   <q-layout view="hHh lpR fFf">
 
     <q-header bordered class="bg-primary text-white" height-hint="98">
-      <q-toolbar>
+      <q-toolbar class="no-padding">
         <q-toolbar-title>
-          <q-avatar rounded >
+          <q-avatar rounded class="q-ml-md">
             <img :src="require('assets/logo_divtec.png')">
           </q-avatar>
           DivTemp
@@ -19,14 +19,17 @@
           class="absolute-right"
         />
 
-        <q-btn
-          v-else
-          to="/account"
-          flat
-          icon-right="account_circle"
-          :label="user.prenom + '.' + user.nom[0].toUpperCase()"
-          class="absolute-right"
-        />
+        <div v-else class="row content-center">
+          <q-btn
+            to="/account"
+            flat
+            :label="user.prenom + '.' + user.nom[0].toUpperCase()"
+          >
+            <q-avatar circle class="q-ml-md">
+              <img :src="this.user.photo ? this.user.photo : require('assets/no_profile_pic.png')">
+            </q-avatar>
+          </q-btn>
+        </div>
 
       </q-toolbar>
 
